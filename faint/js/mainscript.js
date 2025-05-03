@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     const overlay = document.getElementById("overlay");
-    const songs = ["/mp3/backgroundmusic.mp3", "/mp3/backgroundmusic2.mp3", "/mp3/backgroundmusic3.mp3"];
+    const songs = ["/faint/mp3/backgroundmusic.mp3", "/faint/mp3/backgroundmusic2.mp3", "/faint/mp3/backgroundmusic3.mp3"];
     const audio = new Audio();
 
     function closeOverlay() {
