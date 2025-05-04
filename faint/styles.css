@@ -1,4 +1,4 @@
-body{
+body {
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -32,7 +32,6 @@ body{
         "image"
         "text"
         "stats";
-
     font-family: 'Courier New', Courier, monospace;
     border-radius: 18px;
     background: white;
@@ -128,12 +127,10 @@ body{
     filter: drop-shadow(0 0 0.75rem rgb(5, 5, 5));
 }
 
-
 .sec-badge {
     position: fixed;
     bottom: 10px;
     right: 10px;
-
     padding: 10px;
     border-radius: 5px;
     z-index: 1000; 
@@ -157,33 +154,32 @@ body{
     color: #fff;
     font-family: 'Courier New', Courier, monospace;
     text-shadow: 
-    1px 1px 2px rgba(0, 0, 0, 0.6), 
-    2px 2px 4px rgba(0, 0, 0, 0.4), 
-    3px 3px 6px rgba(0, 0, 0, 0.2),
-    0.5px 0 0 rgba(255, 0, 0, 0.3),
-    -0.5px 0 0 rgba(0, 255, 0, 0.3),
-    0 0.5px 0 rgba(0, 0, 255, 0.3),
-    0 -0.5px 0 rgba(255, 255, 0, 0.3),
-    0 0 5px rgba(255, 255, 255, 0.8),
-    0 0 10px rgba(255, 255, 255, 0.6); 
+        1px 1px 2px rgba(0, 0, 0, 0.6), 
+        2px 2px 4px rgba(0, 0, 0, 0.4), 
+        3px 3px 6px rgba(0, 0, 0, 0.2),
+        0.5px 0 0 rgba(255, 0, 0, 0.3),
+        -0.5px 0 0 rgba(0, 255, 0, 0.3),
+        0 0.5px 0 rgba(0, 0, 255, 0.3),
+        0 -0.5px 0 rgba(255, 255, 0, 0.3),
+        0 0 5px rgba(255, 255, 255, 0.8),
+        0 0 10px rgba(255, 255, 255, 0.6); 
 }
 
 .sec-badge:hover {
     transform: scale(1.1);  
 }
 
-
 .overlay-content {
     font-size: 20px;
     color: whitesmoke;
-    text-shadow:1px 1px 10px #fff, 1px 1px 10px #000;
+    text-shadow: 1px 1px 10px #fff, 1px 1px 10px #000;
     position: absolute;
     list-style-type: circle;
     margin-right: 1ch;
     padding-left: 0px;
     user-select: none;
-
 }
+
 .overlay {
     position: fixed;
     vertical-align: middle;
@@ -202,13 +198,12 @@ body{
     transition: opacity 3s;
 }
 
-
 #overlay.hidden {
     opacity: 0;
     pointer-events: none;
 }
 
-#snow{
+#snow {
     position: fixed;
     top: 0;
     left: 0;
@@ -217,4 +212,54 @@ body{
     z-index: -1; 
 }
 
+/* Badge Container */
+.badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin: 10px 0;
+}
 
+/* General Badge Style */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9em;
+    color: white;
+    font-weight: 500;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    filter: drop-shadow(0 0 0.75rem rgb(5, 5, 5));
+    transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+    cursor: url(/faint/crsr/crsrsele.cur), pointer;
+}
+
+/* Hover Effect */
+.badge:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+    filter: drop-shadow(0 0 1rem rgb(5, 5, 5));
+}
+
+/* Specific Badge Types */
+.badge-owner {
+    background: linear-gradient(45deg, #280072, #ab47bc);
+}
+
+.badge-2compy {
+    background: linear-gradient(45deg, #000000, #ff0000);
+}
+
+.badge-dogsqd {
+    background: linear-gradient(45deg, #001aff, #00c3ff);
+}
+
+/* Icon Styling */
+.badge i {
+    margin-right: 5px;
+    font-size: 0.9em;
+}
