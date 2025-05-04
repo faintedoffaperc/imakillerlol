@@ -218,3 +218,51 @@ body{
 }
 
 
+
+/* Badge Container */
+.badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+/* General Badge Style */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9em;
+    color: white;
+    font-weight: 500;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    filter: drop-shadow(0 0 0.75rem rgb(5, 5, 5));
+    transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+    cursor: url(/faint/crsr/crsrsele.cur), pointer;
+}
+
+/* Hover Effect */
+.badge:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+    filter: drop-shadow(0 0 1rem rgb(5, 5, 5));
+}
+
+/* Specific Badge Types */
+.badge-dogsqd {
+    background: linear-gradient(45deg, #001aff, #00c3ff);
+}
+
+.badge-special {
+    background: linear-gradient(45deg, #fff782, #817400);
+}
+
+/* Icon Styling */
+.badge i {
+    margin-right: 5px;
+    font-size: 0.9em;
+}
