@@ -37,68 +37,93 @@
     }
     return gk_fileData[filename] || "";
     }
-    </script><!DOCTYPE html>
+</script>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link rel="stylesheet" href="styles.css">
-<script src="/faint/js/title.js" defer></script>
-<script src="/faint/js/load.js" defer></script>
-<title>stoplookingherewhileitsloading</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="/faint/js/title.js" defer></script>
+    <script src="/faint/js/load.js" defer></script>
+    <title>stoplookingherewhileitsloading</title>
+    <style>
+        /* Video background styling */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures video covers the entire area without distortion */
+            z-index: -1; /* Places video behind all other content */
+        }
+        /* Optional: Add slight opacity to card to improve text readability over video */
+        .card {
+            background: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+        }
+    </style>
 </head>
 <body>
-<div id="overlay" class="overlay">
-    <div class="overlay-content">
-        [Fainted.]
-    </div>
-</div>
-<audio id="backgroundmusic" loop>
-    <source src="/faint/mp3/backgroundmusic.mp3" type="audio/mpeg">
-</audio>
-<div class="card" data-tilt data-tilt-glare data-tilt-max-glare="0.5" data-tilt-full-page-listening data-tilt-reset="false">
-    <div class="card-image">
-        <div class="profile-overlay">
-            <img src="/faint/png/profile.png" alt="Profile Picture" class="profile-pic">
+    <!-- Video background -->
+    <video class="video-background" autoplay muted loop>
+        <source src="/faint/videos/background.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div id="overlay" class="overlay">
+        <div class="overlay-content">
+            [Fainted.]
         </div>
     </div>
-    <div class="card-text">
-        <span class="date"><span id="datetime"></span></span>
-        <h2>faint.</h2>
-        <div class="badges">
-            <span class="badge badge-owner">
-                <i class="fas fa-crown"></i> Owner
-            </span>
-            <span class="badge badge-2compy">
-                <i class="fas fa-trophy"></i> 2compy
-            </span>
-            <span class="badge badge-dogsqd">
-                <i class="fa-solid fa-paw"></i> Dogsqd
+    <audio id="backgroundmusic" loop>
+        <source src="/faint/mp3/backgroundmusic.mp3" type="audio/mpeg">
+    </audio>
+    <div class="card" data-tilt data-tilt-glare data-tilt-max-glare="0.5" data-tilt-full-page-listening data-tilt-reset="false">
+        <div class="card-image">
+            <div class="profile-overlay">
+                <img src="/faint/png/profile.png" alt="Profile Picture" class="profile-pic">
+            </div>
         </div>
-        <p id="loadingText">i love cat girls :3</p>
-        <div class="card-banner">
-            <a href="https://discord.com/users/1019341645151469713" target="_blank">
-                <img src="https://discord.c99.nl/widget/theme-5/1019341645151469713.png" alt="Banner" class="banner">
-            </a>
-        </div>
-        <div class="card-logos">
-            <a href="https://www.roblox.com/users/2829420454/profile" target="_blank">
-                <img src="/faint/png/roblox.png" alt="Logo 1" class="logo">
-            </a>    
-            <a href="https://www.tiktok.com/@faintedoffaperc" target="_blank">
-                <img src="/faint/png/tiktok.png" alt="Logo 2" class="logo">
-            </a>
-            <a href="https://www.instagram.com/faintedoffaperc/" target="_blank">
-                <img src="/faint/png/ig.png" alt="Logo 3" class="logo">
-            </a>
+        <div class="card-text">
+            <span class="date"><span id="datetime"></span></span>
+            <h2>faint.</h2>
+            <div class="badges">
+                <span class="badge badge-owner">
+                    <i class="fas fa-crown"></i> Owner
+                </span>
+                <span class="badge badge-2compy">
+                    <i class="fas fa-trophy"></i> 2compy
+                </span>
+                <span class="badge badge-dogsqd">
+                    <i class="fa-solid fa-paw"></i> Dogsqd
+                </span>
+            </div>
+            <p id="loadingText">i love cat girls :3</p>
+            <div class="card-banner">
+                <a href="https://discord.com/users/1019341645151469713" target="_blank">
+                    <img src="https://discord.c99.nl/widget/theme-5/1019341645151469713.png" alt="Banner" class="banner">
+                </a>
+            </div>
+            <div class="card-logos">
+                <a href="https://www.roblox.com/users/2829420454/profile" target="_blank">
+                    <img src="/faint/png/roblox.png" alt="Logo 1" class="logo">
+                </a>    
+                <a href="https://www.tiktok.com/@faintedoffaperc" target="_blank">
+                    <img src="/faint/png/tiktok.png" alt="Logo 2" class="logo">
+                </a>
+                <a href="https://www.instagram.com/faintedoffaperc/" target="_blank">
+                    <img src="/faint/png/ig.png" alt="Logo 3" class="logo">
+                </a>
+            </div>
         </div>
     </div>
-</div>
-<script src="/faint/js/mainscript.js" defer></script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93a3fc9bec6206f2',t:'MTc0NjMxOTY0Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
-<div id="snow">
-    <script src="/faint/js/snow.js" defer></script>
-</div>
+    <script src="/faint/js/mainscript.js" defer></script>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93a3fc9bec6206f2',t:'MTc0NjMxOTY0Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+    <div id="snow">
+        <script src="/faint/js/snow.js" defer></script>
+    </div>
+    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93c05f265fc2458a',t:'MTc0NjYxNzI4My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
