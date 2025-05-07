@@ -1,0 +1,134 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'IBM Plex Mono', monospace;
+    background: #000;
+    color: #00ff00;
+    overflow: hidden;
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.2;
+}
+
+.terminal {
+    background: rgba(0, 10, 0, 0.9);
+    border: 3px solid #00ff00;
+    box-shadow: 0 0 30px rgba(0, 255, 0, 0.4), inset 0 0 10px rgba(0, 255, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.crt-scanlines::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0.15) 50%, rgba(0, 0, 0, 0.25) 50%);
+    background-size: 100% 4px;
+    opacity: 0.4;
+    z-index: 1;
+}
+
+.crt-scanlines::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.7);
+    pointer-events: none;
+}
+
+.glitch {
+    animation: glitch 0.2s infinite;
+}
+
+@keyframes glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-3px, 3px); }
+    40% { transform: translate(3px, -3px); }
+    60% { transform: translate(-3px, 0); }
+    80% { transform: translate(3px, 3px); }
+    100% { transform: translate(0); }
+}
+
+.blink {
+    animation: blink 0.7s infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
+
+.command {
+    transition: all 0.2s ease;
+}
+
+.command:hover {
+    background: #00ff00;
+    color: #000;
+    cursor: pointer;
+    box-shadow: 0 0 10px #00ff00;
+}
+
+.output {
+    display: none;
+    color: #ff0000;
+}
+
+.output.active {
+    display: block;
+}
+
+.prompt {
+    color: #00ff00;
+    margin-right: 0.5rem;
+}
+
+#terminal-input {
+    caret-color: #00ff00;
+}
+
+.flicker {
+    animation: flicker 0.1s infinite;
+}
+
+@keyframes flicker {
+    50% { opacity: 0.8; }
+}
+
+@media (max-width: 640px) {
+    .terminal {
+        padding: 1rem;
+    }
+    #title {
+        font-size: 1.25rem;
+    }
+    .command, .output, #terminal-input {
+        font-size: 0.875rem;
+    }
+}
+
+#terminal-input {
+    color: #22c55e;
+    background: transparent;
+    border: none;
+    outline: none;
+    width: 100%;
+    font-family: monospace;
+    position: relative;
+    z-index: 10;
+}
+input {
+    pointer-events: auto;
+}
