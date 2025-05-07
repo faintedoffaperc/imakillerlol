@@ -1,41 +1,78 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // CRT Static Background
-    const canvas = document.getElementById('static');
-    const ctx = canvas.getContext('2d');
-    let w, h;
-    
-    function resize() {
-        w = canvas.width = window.innerWidth;
-        h = canvas.height = window.innerHeight;
+    console.log("app.js loaded - Initializing terminal and particles");
+
+    // Particle System
+    const particleCanvas = document.getElementById('particles');
+    const particleCtx = particleCanvas.getContext('2d');
+    let particles = [];
+
+    function resizeParticles() {
+        particleCanvas.width = window.innerWidth;
+        particleCanvas.height = window.innerHeight;
+        console.log("Canvas resized:", particleCanvas.width, particleCanvas.height);
     }
-    resize();
-    window.addEventListener('resize', resize);
-    
-    function drawStatic() {
-        ctx.fillStyle = `rgba(0, 10, 0, ${Math.random() * 0.1})`;
-        for (let i = 0; i < w * h * 0.01; i++) {
-            const x = Math.random() * w;
-            const y = Math.random() * h;
-            ctx.fillRect(x, y, 2, 2);
+    resizeParticles();
+    window.addEventListener('resize', resizeParticles);
+
+    function createParticle() {
+        return {
+            x: Math.random() * particleCanvas.width,
+            y: 0,
+            speed: Math.random() * 2 + 1,
+            size: Math.random() * 3 + 1,
+            life: Math.random() * 100 + 50,
+            targetX: null,
+            velocityX: 0,
+            offsetX: (Math.random() - 0.5) * 100 // Random offset to distribute particles
+        };
+    }
+
+    function animateParticles() {
+        particleCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+        
+        if (particles.length < 100) {
+            particles.push(createParticle());
         }
-        requestAnimationFrame(drawStatic);
+
+        particles.forEach((particle, index) => {
+            particle.y += particle.speed;
+            particle.life -= 1;
+
+            // Smooth mouse following with offset
+            if (particle.targetX === null) particle.targetX = particle.x;
+            const mouseX = particle.targetX + particle.offsetX; // Add offset to spread particles
+            const dx = mouseX - particle.x;
+            particle.velocityX += dx * 0.005; // Reduced acceleration for less clustering
+            particle.velocityX *= 0.50; // Adjusted damping for smoother movement
+            particle.x += particle.velocityX;
+
+            particleCtx.beginPath();
+            particleCtx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+            particleCtx.fillStyle = `rgba(0, 255, 0, ${particle.life / 100})`;
+            particleCtx.fill();
+
+            if (particle.y > particleCanvas.height || particle.life <= 0) {
+                particles.splice(index, 1);
+                particles.push(createParticle());
+            }
+        });
+
+        requestAnimationFrame(animateParticles);
     }
-    drawStatic();
-    
-    // Mouse Parallax
-    document.addEventListener('mousemove', (e) => {
-        const x = (e.clientX / w - 0.5) * 20;
-        const y = (e.clientY / h - 0.5) * 20;
-        gsap.to(canvas, { x, y, duration: 0.5, ease: 'power2.out' });
-    });
-    
-    // Sound Effects
+    console.log("Starting particle animation");
+    animateParticles();
+
+    // Sound Effects with Volume Control
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const masterGain = audioCtx.createGain();
+    masterGain.gain.setValueAtTime(0.3, audioCtx.currentTime); // 30% volume
+    masterGain.connect(audioCtx.destination);
+
     function playTypeSound() {
         const oscillator = audioCtx.createOscillator();
         oscillator.type = 'square';
         oscillator.frequency.setValueAtTime(800, audioCtx.currentTime);
-        oscillator.connect(audioCtx.destination);
+        oscillator.connect(masterGain);
         oscillator.start();
         oscillator.stop(audioCtx.currentTime + 0.05);
     }
@@ -43,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const oscillator = audioCtx.createOscillator();
         oscillator.type = 'sine';
         oscillator.frequency.setValueAtTime(1200, audioCtx.currentTime);
-        oscillator.connect(audioCtx.destination);
+        oscillator.connect(masterGain);
         oscillator.start();
         oscillator.stop(audioCtx.currentTime + 0.1);
     }
@@ -51,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const oscillator = audioCtx.createOscillator();
         oscillator.type = 'square';
         oscillator.frequency.setValueAtTime(600, audioCtx.currentTime);
-        oscillator.connect(audioCtx.destination);
+        oscillator.connect(masterGain);
         oscillator.start();
         oscillator.stop(audioCtx.currentTime + 0.08);
     }
@@ -59,12 +96,20 @@ document.addEventListener("DOMContentLoaded", () => {
         const oscillator = audioCtx.createOscillator();
         oscillator.type = 'sawtooth';
         oscillator.frequency.setValueAtTime(300, audioCtx.currentTime);
-        oscillator.connect(audioCtx.destination);
+        oscillator.connect(masterGain);
         oscillator.start();
         oscillator.stop(audioCtx.currentTime + 0.2);
     }
+
+    // Mouse Movement for Particles Only
+    document.addEventListener('mousemove', (e) => {
+        const mouseX = e.clientX;
+        particles.forEach(particle => {
+            particle.targetX = mouseX;
+        });
+    });
     
-    // Boot Sequence and Typewriter Effect
+    // Boot Sequence and Typewriter Effect with Transition
     const title = document.getElementById('title');
     const bootMessage = document.getElementById('boot-message');
     const bootSteps = [
@@ -78,6 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let titleIndex = 0;
     
     function typeBootStep() {
+        console.log("Typing boot step:", bootStepIndex, bootIndex);
         if (bootStepIndex < bootSteps.length) {
             const currentStep = bootSteps[bootStepIndex];
             if (bootIndex < currentStep.length) {
@@ -92,11 +138,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 setTimeout(typeBootStep, 500);
             }
         } else {
-            setTimeout(typeTitle, 500);
+            gsap.to('#boot-message', { opacity: 0, duration: 1, onComplete: typeTitle });
         }
     }
     
     function typeTitle() {
+        console.log("Typing title:", titleIndex);
         if (titleIndex < titleText.length) {
             title.textContent = titleText.slice(0, titleIndex + 1) + '_';
             playTypeSound();
@@ -104,9 +151,13 @@ document.addEventListener("DOMContentLoaded", () => {
             setTimeout(typeTitle, 100);
         } else {
             title.innerHTML = titleText + '<span class="blink">_</span>';
+            title.style.opacity = '1';
         }
     }
-    setTimeout(typeBootStep, 500);
+    setTimeout(() => {
+        console.log("Starting terminal animation and boot sequence");
+        gsap.fromTo('.terminal', { opacity: 0 }, { opacity: 1, duration: 1, ease: 'linear', onStart: typeBootStep });
+    }, 500);
     
     // ASCII Art for Outputs
     const asciiArt = {
@@ -145,82 +196,127 @@ document.addEventListener("DOMContentLoaded", () => {
       |_____|
     `
     };
+
+    // Random Error Messages
+    const errorMessages = [
+        'SYSTEM FAULT DETECTED',
+        'MEMORY CORRUPTION WARNING',
+        'I/O ERROR DETECTED',
+        'PROCESSOR OVERLOAD'
+    ];
+    function showRandomError() {
+        if (Math.random() < 0.1) { // 10% chance per input
+            const output = document.createElement('div');
+            output.className = 'output text-sm ml-4 active';
+            output.textContent = errorMessages[Math.floor(Math.random() * errorMessages.length)];
+            document.getElementById('commands').appendChild(output);
+            gsap.fromTo(
+                output,
+                { opacity: 0, y: 10 },
+                { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
+            );
+            playErrorSound();
+        }
+    }
+
+    // Function to Trigger Navigation
+    function triggerNavigation(cmd, output) {
+        playClickSound();
+        output.classList.add('active');
+        output.classList.add('status');
+        output.textContent = 'CONNECTING TO ' + cmd.textContent.slice(2) + '...';
+        gsap.fromTo(
+            output,
+            { opacity: 0, y: 10 },
+            { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
+        );
+
+        setTimeout(() => {
+            output.textContent = '[          ] 0%';
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                output.textContent = '[' + '='.repeat(progress / 10) + ' '.repeat(10 - progress / 10) + '] ' + progress + '%';
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    output.classList.remove('status');
+                    output.classList.add('active');
+                    output.textContent = asciiArt[cmd.dataset.link] + '\nRedirecting to ' + cmd.dataset.link + '... [OK]';
+                    gsap.to(output, {
+                        color: '#ff0000',
+                        duration: 0.3,
+                        onComplete: () => {
+                            window.location.href = cmd.dataset.link;
+                        },
+                    });
+                }
+            }, 100);
+        }, 500);
+    }
     
     // Command Interactions
     const commands = document.querySelectorAll('.command');
-    commands.forEach((cmd, i) => {
+    commands.forEach((cmd) => {
         const output = cmd.nextElementSibling;
     
         // Hover Effect
         cmd.addEventListener('mouseenter', () => {
             if (!cmd.classList.contains('glitch')) {
                 cmd.classList.add('glitch');
-                playBeepSound();
             }
         });
         cmd.addEventListener('mouseleave', () => {
             cmd.classList.remove('glitch');
         });
-    
-        // Focus Effect
-        cmd.addEventListener('focus', () => {
-            cmd.classList.add('glitch');
-            playBeepSound();
-        });
-    
-        // Click Effect
-        cmd.addEventListener('click', () => {
-            playClickSound();
-            output.classList.add('active');
-            output.classList.add('status');
-            output.textContent = 'CONNECTING TO ' + cmd.textContent.slice(2) + '...';
-            gsap.fromTo(
-                output,
-                { opacity: 0, y: 10 },
-                { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
-            );
-    
-            // Connection Animation
-            setTimeout(() => {
-                output.textContent = '[          ] 0%';
-                let progress = 0;
-                const interval = setInterval(() => {
-                    progress += 10;
-                    output.textContent = '[' + '='.repeat(progress / 10) + ' '.repeat(10 - progress / 10) + '] ' + progress + '%';
-                    if (progress >= 100) {
-                        clearInterval(interval);
-                        output.classList.remove('status');
-                        output.classList.add('active');
-                        output.textContent = asciiArt[cmd.dataset.link] + '\nRedirecting to ' + cmd.dataset.link + '... [OK]';
-                        gsap.to(output, {
-                            color: '#ff0000',
-                            duration: 0.3,
-                            onComplete: () => {
-                                window.location.href = cmd.dataset.link;
-                            },
-                        });
-                    }
-                }, 100);
-            }, 500);
-        });
     });
     
     // Terminal Input Handling
     const input = document.getElementById('terminal-input');
-    const validCommands = ['/faint', '/dan', '/sworn', '/pnd'];
+    const statusBar = document.getElementById('status-bar');
+    const validCommands = ['/faint', '/dan', '/sworn', '/pnd', '/help', '/clear'];
     let commandHistory = [];
     let historyIndex = -1;
     
+    function updateStatusBar() {
+        const now = new Date();
+        const time = now.toLocaleTimeString();
+        const load = Math.floor(Math.random() * 100) + '%';
+        statusBar.textContent = `Time: ${time} | Load: ${load}`;
+    }
+    setInterval(updateStatusBar, 5000); // Update every 5 seconds
+    updateStatusBar(); // Initial update
+
     input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
-            const value = input.value.trim();
+            const value = input.value.trim().toLowerCase();
             playClickSound();
             commandHistory.push(value);
             historyIndex = commandHistory.length;
-    
+            showRandomError();
+
             if (validCommands.includes(value)) {
                 const cmd = Array.from(commands).find(c => c.dataset.link === value);
-                cmd.click();
+                const output = cmd ? cmd.nextElementSibling : document.createElement('div');
+                if (cmd) {
+                    triggerNavigation(cmd, output);
+                } else if (value === '/help') {
+                    output.className = 'output text-sm ml-4 active';
+                    output.textContent = 'Available commands:\n' +
+                        '/faint - Display faint art\n' +
+                        '/dan - Display dan art\n' +
+                        '/sworn - Display sworn art\n' +
+                        '/pnd - Display pnd art\n' +
+                        '/help - Show this help message\n' +
+                        '/clear - Clear the screen';
+                    document.getElementById('commands').appendChild(output);
+                    gsap.fromTo(
+                        output,
+                        { opacity: 0, y: 10 },
+                        { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }
+                    );
+                } else if (value === '/clear') {
+                    document.getElementById('commands').innerHTML = '';
+                }
                 input.value = '';
             } else {
                 const output = document.createElement('div');
@@ -264,40 +360,6 @@ document.addEventListener("DOMContentLoaded", () => {
         playTypeSound();
     });
     
-    // Keyboard Navigation
-    let selectedIndex = -1;
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowDown') {
-            selectedIndex = Math.min(selectedIndex + 1, commands.length - 1);
-            commands[selectedIndex].focus();
-            playBeepSound();
-        } else if (e.key === 'ArrowUp') {
-            selectedIndex = Math.max(selectedIndex - 1, -1);
-            if (selectedIndex >= 0) {
-                commands[selectedIndex].focus();
-                playBeepSound();
-            } else {
-                input.focus();
-            }
-        } else if (e.key === 'Enter' && selectedIndex >= 0) {
-            commands[selectedIndex].click();
-        }
-    });
-    
-    // Screen Flicker Effect
-    setInterval(() => {
-        gsap.to('.terminal', {
-            opacity: 0.6,
-            duration: 0.1,
-            repeat: 1,
-            yoyo: true,
-            ease: 'power1.inOut',
-            onComplete: () => {
-                gsap.set('.terminal', { opacity: 1 });
-            },
-        });
-    }, 4000);
-    
     // Shutdown Animation on Unload
     window.addEventListener('beforeunload', () => {
         gsap.to('.terminal', {
@@ -311,9 +373,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Initial Animations
     gsap.from('.terminal', {
         opacity: 0,
-        scale: 0.8,
-        duration: 1.5,
-        ease: 'power3.out',
+        duration: 1,
+        ease: 'linear'
     });
     gsap.from(commands, {
         opacity: 0,
@@ -330,4 +391,14 @@ document.addEventListener("DOMContentLoaded", () => {
         duration: 0.5,
         ease: 'power2.out',
     });
+
+    // Auto-focus the input field on page load
+    window.addEventListener('load', () => {
+        input.focus();
     });
+
+    // Ensure input field remains focusable
+    input.addEventListener('click', () => {
+        input.focus();
+    });
+});
