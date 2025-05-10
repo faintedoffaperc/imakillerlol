@@ -194,6 +194,15 @@ document.addEventListener("DOMContentLoaded", () => {
       | *** |
       | *** |
       |_____|
+    `,
+        '/kazt': `
+       _____
+      | * * |
+      | * * |
+      |_____|
+      |  *  |
+      |  *  |
+      |_____|
     `
     };
 
@@ -273,7 +282,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Terminal Input Handling
     const input = document.getElementById('terminal-input');
     const statusBar = document.getElementById('status-bar');
-    const validCommands = ['/faint', '/dan', '/sworn', '/pnd', '/help', '/clear'];
+    const validCommands = ['/faint', '/dan', '/sworn', '/pnd', '/kazt', '/help', '/clear'];
     let commandHistory = [];
     let historyIndex = -1;
     
@@ -306,6 +315,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         '/dan - Display dan art\n' +
                         '/sworn - Display sworn art\n' +
                         '/pnd - Display pnd art\n' +
+                        '/kazt - Display kazt art\n' +
                         '/help - Show this help message\n' +
                         '/clear - Clear the screen';
                     document.getElementById('commands').appendChild(output);
