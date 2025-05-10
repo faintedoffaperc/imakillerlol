@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Sound Effects with Volume Control
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     const masterGain = audioCtx.createGain();
-    masterGain.gain.setValueAtTime(0.1, audioCtx.currentTime); // 30% volume
+    masterGain.gain.setValueAtTime(0.05, audioCtx.currentTime); // 30% volume
     masterGain.connect(audioCtx.destination);
 
     function playTypeSound() {
