@@ -311,11 +311,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 } else if (value === '/help') {
                     output.className = 'output text-sm ml-4 active';
                     output.textContent = 'Available commands:\n' +
-                        '/faint - Display faint art\n' +
-                        '/dan - Display dan art\n' +
-                        '/sworn - Display sworn art\n' +
-                        '/pnd - Display pnd art\n' +
-                        '/kazt - Display kazt art\n' +
+                        '/faint - Display faint page\n' +
+                        '/dan - Display dan page\n' +
+                        '/sworn - Display sworn page\n' +
+                        '/pnd - Display pnd page\n' +
+                        '/kazt - Display kazt page\n' +
                         '/help - Show this help message\n' +
                         '/clear - Clear the screen';
                     document.getElementById('commands').appendChild(output);
